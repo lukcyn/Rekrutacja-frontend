@@ -1,6 +1,7 @@
 "use client";
 import { testApiCall } from "@/api/testFetch"
 import { useEffect } from "react"
+import SubmittingApplication from "../submitting-applications/submitting-applications";
 
 export default function Test() {
   
@@ -9,6 +10,9 @@ export default function Test() {
   }, [])
   
   return (
-    <div>This is a test page at url/test</div>
+    <div>
+      <div>This is a test page at url/test</div>
+    </div>
+  
   )
 }

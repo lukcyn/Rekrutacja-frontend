@@ -6,3 +6,10 @@ export const testApiCall = async () => {
         console.log("Api call successful");
     });
 }
+
+export const submitApplication = async () => { 
+    axios.get('/submit-application')
+    .then((response) => {
+        console.log("Api call successful");
+    });
+}
