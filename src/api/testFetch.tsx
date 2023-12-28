@@ -7,9 +7,3 @@ export const testApiCall = async () => {
     });
 }
 
-export const submitApplication = async () => { 
-    axios.get('/submit-application')
-    .then((response) => {
-        console.log("Api call successful");
-    });
-}

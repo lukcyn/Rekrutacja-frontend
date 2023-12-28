@@ -11,8 +11,12 @@ export default function Test() {
   
   return (
     <div>
-      <div>This is a test page at url/test</div>
+      <div>
+        <div>This is a test page at url/test</div>
+      </div>
+      <SubmittingApplication />
     </div>
+
   
   )
 }
