@@ -1,8 +1,6 @@
-import styles from './page.module.css'
-
 export default function AdministrationHome() {
   return (
-    <div className={styles.main}>
+    <div>
       This is administration home page
     </div>
   )

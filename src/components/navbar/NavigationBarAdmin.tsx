@@ -1,9 +1,9 @@
 import React from "react";
 import NavigationBarBase from "./NavigationBarBase";
 
-const NavigationBarAdmin = () => {
+const NavigationBarAdmin = ({onLogout = () => {}}) => {
   return (
-    <NavigationBarBase>
+    <NavigationBarBase onLogout={ onLogout }>
       <ul className="navbar-nav mr-auto">
         <li className="nav-item active">
           <a className="nav-link">
