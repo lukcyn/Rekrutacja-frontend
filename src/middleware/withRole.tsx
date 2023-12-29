@@ -1,28 +1,22 @@
-import { useEffect } from 'react';
-import { useRouter } from 'next/router';
-import { AppUserRole } from '@/enums/role';
+"use client";
 import { useUserRole } from '@/context/UserRoleContext';
+import { AppUserRole } from '@/enums/role';
+import { useRouter } from 'next/navigation';
 
-const withRole = (allowedRoles: AppUserRole[]) => (WrappedComponent: React.FC) => {
-  const WrapperComponent: React.FC = (props) => {
-    const router = useRouter();
+export function withRoles(Component: any, requiredRole: AppUserRole[]) {
+  return function WithRolesWrapper(props: any) {
+    const router = useRouter()
     const { userRole } = useUserRole();
 
-    // TODO: resolve typescript error
-    useEffect(() => {
-      if (!allowedRoles.includes(userRole)) {
-        router.push('/');
-      }
-    }, [userRole]);
+    const hasPermission = userRole && requiredRole.includes(userRole);
 
-    if (!allowedRoles.includes(userRole)) {
-      return null;
+    if (hasPermission) {
+      return <Component {...props} />
+    } else {
+      router.push('/')
+      return null
     }
+  }
+}
 
-    return <WrappedComponent {...props} />;
-  };
-
-  return WrapperComponent;
-};
-
-export default withRole;
+export default withRoles;

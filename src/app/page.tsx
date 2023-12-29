@@ -1,14 +1,14 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useUserRole } from "@/context/UserRoleContext";
-import { useEffect } from "react";
+import { useLayoutEffect } from "react";
 import { AppUserRole } from "@/enums/role";
 
-export default function Home() {
+export default function IndexPage() {
   const router = useRouter();
   const { userRole } = useUserRole();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     switch (userRole) {
       case AppUserRole.CANDIDATE:
         router.push("/home/candidate");
