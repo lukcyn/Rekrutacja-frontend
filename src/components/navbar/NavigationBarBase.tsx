@@ -1,5 +1,7 @@
 import React from "react";
 import Link from "next/link";
+import logout from "@/utils/logout";
+import { useUserRole } from "@/context/UserRoleContext";
 
 type Props = {
   children: React.ReactNode;
@@ -7,13 +9,10 @@ type Props = {
   hasLogoutButton?: boolean;
 };
 
-const NavigationBarBase = ({
-  children,
-  onLogout = () => {},
-  hasLogoutButton = true,
-}: Props) => {
+const NavigationBarBase = ({ children, hasLogoutButton = true }: Props) => {
+  const { setUserRole } = useUserRole();
+
   return (
-    <>
       <div>
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark px-3">
           <Link className="navbar-brand" href="/">
@@ -37,14 +36,16 @@ const NavigationBarBase = ({
 
           {hasLogoutButton && (
             <div className="ml-auto">
-              <button className="btn btn-light" onClick={onLogout}>
+              <button
+                className="btn btn-light"
+                onClick={() => logout(setUserRole)}
+              >
                 Wyloguj
               </button>
             </div>
           )}
         </nav>
       </div>
-    </>
   );
 };
 

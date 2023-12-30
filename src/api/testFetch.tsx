@@ -1,9 +1,15 @@
-import axios from "./axios";
+import { axiosPublic, axiosPrivate } from "./axios";
 
 export const testApiCall = async () => { 
-    axios.get('/test')
+    axiosPublic.get('/test')
     .then((response) => {
         console.log("Api call successful");
     });
 }
 
+export const testApiCallSecured = async () => {
+    axiosPrivate.get('/test/secured')
+    .then((response) => {
+        console.log("Api call successful");
+    });
+}

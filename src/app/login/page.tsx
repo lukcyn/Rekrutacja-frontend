@@ -1,24 +1,29 @@
 "use client";
-import { useUserAuth } from "@/context/UserAuthContext";
+import { useUserRole } from "@/context/UserRoleContext";
 import { SyntheticEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import { login } from "@/api/auth";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Cookies from 'js-cookie';
 
 
 export default function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const {userRole, setUserRole, jwt, setJWT} = useUserAuth();
+  const {userRole, setUserRole} = useUserRole();
   const router = useRouter();
+
 
   const onLoginClick = async (e: SyntheticEvent) => {
     e.preventDefault();
 
     login(username, password).then((data) => {
       setUserRole(data.role);
-      setJWT(data.token);
+      
+      Cookies.set('token', data.token, { expires: 1 });
+      Cookies.set('role', data.role, { expires: 1 });
+
       router.push("/");
     }).catch((error) => {
       if(error.response.status === 401)

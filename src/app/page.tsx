@@ -1,12 +1,12 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { useUserAuth } from "@/context/UserAuthContext";
+import { useUserRole } from "@/context/UserRoleContext";
 import { useLayoutEffect } from "react";
 import { AppUserRole } from "@/enums/role";
 
 export default function IndexPage() {
   const router = useRouter();
-  const { userRole } = useUserAuth();
+  const { userRole } = useUserRole();
 
   useLayoutEffect(() => {
     switch (userRole) {

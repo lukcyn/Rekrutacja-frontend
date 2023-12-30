@@ -4,23 +4,20 @@ import NavigationBarAdmin from "./NavigationBarAdmin";
 import NavigationBarAdministration from "./NavigationBarAdministration";
 import NavigationBarAnonymous from "./NavigationBarAnonymous";
 import { AppUserRole } from "@/enums/role";
-import { useUserAuth } from "@/context/UserAuthContext";
+import { useUserRole } from "@/context/UserRoleContext";
+
 
 const NavigationBarRoleAdaptive = () => {
-  const { userRole, setUserRole } = useUserAuth();
-
-  const onLogout = () => {
-    setUserRole(null);
-  }
+  const { userRole, setUserRole } = useUserRole();
 
   const renderNavbarBasedOnRole = () => {
     switch (userRole) {
       case AppUserRole.CANDIDATE:
-        return <NavigationBarCandidate onLogout={ onLogout }/>;
+        return <NavigationBarCandidate/>;
       case AppUserRole.ADMIN:
-        return <NavigationBarAdmin onLogout={ onLogout }/>;
+        return <NavigationBarAdmin/>;
       case AppUserRole.ADMINISTRATION_EMPLOYEE:
-        return <NavigationBarAdministration onLogout={ onLogout }/>;
+        return <NavigationBarAdministration/>;
       default:
         return <NavigationBarAnonymous/>;
     }
