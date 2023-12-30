@@ -15,12 +15,12 @@ export default function RootLayout({ children }: Props) {
 
   return (
     <html lang="pl">
-      <UserRoleProvider>
         <body className={inter.className}>
+      <UserRoleProvider>
           <NavigationBarRoleAdaptive/>
           {children}
-        </body>
       </UserRoleProvider>
+        </body>
     </html>
   )
 }

@@ -1,6 +1,8 @@
-"use client";
+"use client"
 import React, { createContext, useContext, ReactNode } from 'react';
 import { AppUserRole } from '@/enums/role';
+import Cookies from 'js-cookie';
+import { useEffect } from 'react';
 
 type UserRoleContextProps = {
   userRole: AppUserRole | null;
@@ -11,6 +13,11 @@ const UserRoleContext = createContext<UserRoleContextProps | undefined>(undefine
 
 export const UserRoleProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [userRole, setUserRole] = React.useState<AppUserRole | null>(AppUserRole.CANDIDATE);
+
+  useEffect(() => {
+    const initialUserRole = Cookies.get('role') as AppUserRole | null;
+    setUserRole(initialUserRole);
+  }, []);
 
   return (
     <UserRoleContext.Provider value={{ userRole, setUserRole }}>
