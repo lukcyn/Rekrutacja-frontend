@@ -10,7 +10,7 @@ type UserRoleContextProps = {
 const UserRoleContext = createContext<UserRoleContextProps | undefined>(undefined);
 
 export const UserRoleProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [userRole, setUserRole] = React.useState<AppUserRole | null>(null);
+  const [userRole, setUserRole] = React.useState<AppUserRole | null>(AppUserRole.CANDIDATE);
 
   return (
     <UserRoleContext.Provider value={{ userRole, setUserRole }}>

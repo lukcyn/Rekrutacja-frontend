@@ -2,6 +2,7 @@
 import { testApiCall } from "@/api/testFetch"
 import { useEffect } from "react"
 import SubmittingApplication from "../submitting-applications/submitting-applications";
+import Applications from "../applications/applications"
 
 export default function Test() {
   
@@ -14,7 +15,7 @@ export default function Test() {
       <div>
         <div>This is a test page at url/test</div>
       </div>
-      <SubmittingApplication />
+      <Applications />
     </div>
 
   
