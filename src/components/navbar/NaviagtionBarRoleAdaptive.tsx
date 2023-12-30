@@ -4,10 +4,10 @@ import NavigationBarAdmin from "./NavigationBarAdmin";
 import NavigationBarAdministration from "./NavigationBarAdministration";
 import NavigationBarAnonymous from "./NavigationBarAnonymous";
 import { AppUserRole } from "@/enums/role";
-import { useUserRole } from "@/context/UserRoleContext";
+import { useUserAuth } from "@/context/UserAuthContext";
 
 const NavigationBarRoleAdaptive = () => {
-  const { userRole, setUserRole } = useUserRole();
+  const { userRole, setUserRole } = useUserAuth();
 
   const onLogout = () => {
     setUserRole(null);

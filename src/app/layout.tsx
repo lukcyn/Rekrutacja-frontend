@@ -2,7 +2,7 @@
 import { Inter } from 'next/font/google'
 import 'bootstrap/dist/css/bootstrap.css'
 import './globals.css'
-import { UserRoleProvider } from '@/context/UserRoleContext';
+import { UserAuthProvider } from '@/context/UserAuthContext';
 import NavigationBarRoleAdaptive from '@/components/navbar/NaviagtionBarRoleAdaptive';
 
 const inter = Inter({ subsets: ['latin'] })
@@ -15,12 +15,12 @@ export default function RootLayout({ children }: Props) {
 
   return (
     <html lang="pl">
-      <UserRoleProvider>
+      <UserAuthProvider>
         <body className={inter.className}>
           <NavigationBarRoleAdaptive/>
           {children}
         </body>
-      </UserRoleProvider>
+      </UserAuthProvider>
     </html>
   )
 }
