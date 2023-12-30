@@ -21,4 +21,4 @@ function TestFetch() {
   )
 }
 
-export default withRoles(TestFetch, [AppUserRole.ADMIN, AppUserRole.ADMINISTRATION_EMPLOYEE, AppUserRole.ADMIN]);
+export default withRoles(TestFetch, [AppUserRole.CANDIDATE, AppUserRole.ADMINISTRATION_EMPLOYEE, AppUserRole.ADMIN]);
