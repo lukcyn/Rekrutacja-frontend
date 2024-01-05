@@ -13,3 +13,13 @@ export const fetchRecruitment = async (params: RecruitmentPaginationParams): Pro
         throw error;
     }
 };
+
+
+export const deleteRecruitment = async (id: number): Promise<void> => {
+    try {
+        const response = await axiosPrivate.delete(`/recruitment/${id}`);
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+};
