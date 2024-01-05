@@ -2,11 +2,12 @@ import { useState } from "react";
 import { Form, FormControl, Button } from "react-bootstrap";
 
 interface SearchBarProps {
+  initialText: string;
   onSubmit: (searchTerm: string) => void;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({ onSubmit }) => {
-  const [searchTerm, setSearchTerm] = useState("");
+const SearchBar: React.FC<SearchBarProps> = ({ initialText, onSubmit }) => {
+  const [searchTerm, setSearchTerm] = useState(initialText);
 
   const submitWrapperForm = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();

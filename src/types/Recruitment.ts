@@ -8,7 +8,8 @@ export interface RecruitmentDTO {
     endDate: string;
     capacity: number;
     fieldOfStudy: FieldOfStudyDTO;
-    specialization: SpecializationDTO;
+    specialization?: SpecializationDTO;
+    recruitmentThreshold?: number;
 }
 
 export interface RecruitmentShortDTO {

@@ -7,7 +7,6 @@ interface Props {
 }
 
 const PaginationBar = ({ total, current, onClick }: Props) => {
-  console.log(current, total);
     return (
     <Pagination>
       {total > 3 && <Pagination.First onClick={() => onClick(0)} />}

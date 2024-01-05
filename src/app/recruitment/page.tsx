@@ -9,9 +9,14 @@ import {
   RecruitmentPaginationParams,
   RecruitmentShortDTO,
 } from "@/types/Recruitment";
-import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const RecruitmentPage = () => {
+  const SEARCH_PARAM = "search";
+  const router = useRouter();
+  const searchParams = useSearchParams()
+
   const [recruitments, setRecruitments] = useState<RecruitmentShortDTO[]>([]);
   const [total, setTotal] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState<number>(0);
@@ -19,8 +24,13 @@ const RecruitmentPage = () => {
   var recruitmentPaginationParams: RecruitmentPaginationParams = {
     pageNumber: 0,
     size: 6,
-    search: "",
+    search: searchParams.has(SEARCH_PARAM) ? searchParams.get(SEARCH_PARAM)! : "",
   };
+
+
+  useEffect(() => {
+    fetchRecruitmentPage(recruitmentPaginationParams);
+  }, []);
 
   const fetchRecruitmentPage = (params: RecruitmentPaginationParams) => {
     fetchRecruitment(recruitmentPaginationParams)
@@ -45,7 +55,7 @@ const RecruitmentPage = () => {
   };
 
   const onCardViewClick = (data: RecruitmentShortDTO) => {
-    console.log("View");
+    router.push("/recruitment/" + data.recruitmentId);
   };
 
   const onCardModifyClick = (data: RecruitmentShortDTO) => {
@@ -59,7 +69,7 @@ const RecruitmentPage = () => {
 
     if (isConfirmed) {
       deleteRecruitment(data.recruitmentId)
-        .then((response) => {
+        .then((_) => {
           const updatedRecruitments = recruitments.filter(
             (recruitment) => recruitment.recruitmentId !== data.recruitmentId
           );
@@ -73,21 +83,21 @@ const RecruitmentPage = () => {
 
   const renderCard = (data: RecruitmentShortDTO) => {
     return (
-      <li key={data.recruitmentId}>
+      <div key={data.recruitmentId}>
         <ResourceCard
           title={data.title}
           onView={() => onCardViewClick(data)}
           onModify={() => onCardModifyClick(data)}
           onDelete={() => onCardDeleteClick(data)}
         />
-      </li>
+      </div>
     );
   };
 
   return (
     <div>
-      <SearchBar onSubmit={onSubmit} />
-      <ul>{recruitments.map((recruitment) => renderCard(recruitment))}</ul>
+      <SearchBar onSubmit={onSubmit} initialText={searchParams.has(SEARCH_PARAM) ? searchParams.get(SEARCH_PARAM)! : ""} />
+      <div>{recruitments.map((recruitment) => renderCard(recruitment))}</div>
       <PaginationBar
         total={total}
         current={currentPage}

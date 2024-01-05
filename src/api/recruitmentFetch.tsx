@@ -1,4 +1,4 @@
-import { RecruitmentPaginationParams, RecruitmentShortDTO } from "@/types/Recruitment";
+import { RecruitmentDTO, RecruitmentPaginationParams, RecruitmentShortDTO } from "@/types/Recruitment";
 import { axiosPrivate } from "./axios";
 import { Page, Pageable } from "@/types/Page";
 
@@ -23,3 +23,13 @@ export const deleteRecruitment = async (id: number): Promise<void> => {
         throw error;
     }
 };
+
+export const fetchRecruitmentById = async (id: number): Promise<RecruitmentDTO> => {
+    try {
+        const response = await axiosPrivate.get(`/recruitment/${id}`);
+        return response.data;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+}
