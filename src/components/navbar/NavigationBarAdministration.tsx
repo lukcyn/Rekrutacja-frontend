@@ -12,7 +12,7 @@ const NavigationBarAdministration = () => {
           </a>
         </li>
         <li className="nav-item active">
-          <Link className="nav-link" href={"/recruitment/search"}>
+          <Link className="nav-link" href={"/recruitment"}>
               Rekrutacje
           </Link>
         </li>
