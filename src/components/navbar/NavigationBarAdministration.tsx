@@ -1,5 +1,6 @@
 import React from "react";
 import NavigationBarBase from "./NavigationBarBase";
+import Link from "next/link";
 
 const NavigationBarAdministration = () => {
   return (
@@ -11,9 +12,9 @@ const NavigationBarAdministration = () => {
           </a>
         </li>
         <li className="nav-item active">
-          <a className="nav-link">
-            Rekrutacje
-          </a>
+          <Link className="nav-link" href={"/recruitment"}>
+              Rekrutacje
+          </Link>
         </li>
       </ul>
     </NavigationBarBase>
