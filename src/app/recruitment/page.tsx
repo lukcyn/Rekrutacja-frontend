@@ -12,6 +12,7 @@ import {
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
+
 const RecruitmentPage = () => {
   const SEARCH_PARAM = "search";
   const router = useRouter();
@@ -59,7 +60,7 @@ const RecruitmentPage = () => {
   };
 
   const onCardModifyClick = (data: RecruitmentShortDTO) => {
-    console.log("Modify");
+    router.push("/recruitment/" + data.recruitmentId + "/edit");
   };
 
   const onCardDeleteClick = (data: RecruitmentShortDTO) => {
