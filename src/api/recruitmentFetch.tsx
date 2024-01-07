@@ -43,3 +43,12 @@ export const updateRecruitment = async (id: number, recruitment: RecruitmentRequ
         throw error;
     }
 }
+
+export const createRecruitment = async (recruitment: RecruitmentRequest): Promise<void> => {
+    try {
+        const response = await axiosPrivate.post('/recruitment', recruitment);
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+}

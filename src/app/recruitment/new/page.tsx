@@ -1,14 +1,13 @@
 "use client";
-import { fetchRecruitmentById, updateRecruitment } from "@/api/recruitmentFetch";
+import { createRecruitment } from "@/api/recruitmentFetch";
 import { AppUserRole } from "@/enums/role";
 import withRole from "@/middleware/withRole";
 import { RecruitmentDTO, RecruitmentRequest } from "@/types/Recruitment";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { SpecializationDTO } from "@/types/Specialization";
 import { FieldOfStudyDTO } from "@/types/FieldOfStudy";
-import 'react-toastify/dist/ReactToastify.css';
-import CreateEditBasePage from "../../CreateEditBasePage";
+import CreateEditBasePage from "../CreateEditBasePage";
 
 
 type ValuePiece = Date | null;
@@ -20,9 +19,8 @@ interface Prop {
   };
 }
 
-const RecruitmentEditPage = ({ params }: Prop) => {
+const RecruitmentCreatePage = ({ params }: Prop) => {
   const router = useRouter();
-  const [recruitment, setRecruitment] = useState<RecruitmentDTO | undefined>();
   const [cycle, setCycle] = useState<string>("");
   const [startDate, setStartDate] = useState<Value>();
   const [endDate, setEndDate] = useState<Value>();
@@ -32,10 +30,6 @@ const RecruitmentEditPage = ({ params }: Prop) => {
   const [specializations, setSpecializations] = useState<SpecializationDTO[]>([]);
   const [fieldOfStudies, setFieldOfStudies] = useState<FieldOfStudyDTO[]>([]);
 
-  useEffect(() => {
-    const id = verifyAndGetIdFromParams();
-    fetchRecruitment(id);
-  }, []);
 
   const createRecruitmentDTO = (): RecruitmentRequest => {
     const formatDate = (date: Date | undefined): string => {
@@ -55,38 +49,12 @@ const RecruitmentEditPage = ({ params }: Prop) => {
   const onButtonClick = () => {
     const recruitmentRequest = createRecruitmentDTO();
     
-    updateRecruitment(recruitment!.id, recruitmentRequest)
+    createRecruitment(recruitmentRequest)
     .then(() => {
-      console.log("Success update");
+      console.log("Success create!");
     }).catch((error) => {
       console.log(error);
     });
-  };
-
-  const verifyAndGetIdFromParams = () => {
-    if (params.id === undefined) router.push("/notFound");
-
-    const id = parseInt(params.id);
-
-    if (isNaN(id)) router.push("/notFound");
-
-    return id;
-  };
-
-  const fetchRecruitment = (id: number) => {
-    fetchRecruitmentById(id)
-      .then((response) => {
-        setRecruitment(response);
-        setCycle(response.cycle || "");
-        setStartDate(new Date(response.startDate));
-        setEndDate(new Date(response.endDate));
-        setCapacity(response.capacity || 0);
-        setSelectedFieldOfStudy(response.fieldOfStudy);
-        setSelectedSpecialization(response.specialization);
-      })
-      .catch((error) => {
-        if (error.response.status === 404) router.push("/notFound");
-      });
   };
 
   return (
@@ -112,6 +80,6 @@ const RecruitmentEditPage = ({ params }: Prop) => {
   );
 };
 
-export default withRole(RecruitmentEditPage, [
+export default withRole(RecruitmentCreatePage, [
   AppUserRole.ADMINISTRATION_EMPLOYEE,
 ]);
