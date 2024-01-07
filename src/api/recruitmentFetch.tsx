@@ -1,6 +1,6 @@
 import { RecruitmentDTO, RecruitmentPaginationParams, RecruitmentShortDTO } from "@/types/Recruitment";
 import { axiosPrivate } from "./axios";
-import { Page, Pageable } from "@/types/Page";
+import { Page } from "@/types/Page";
 
 
 

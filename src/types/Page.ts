@@ -26,3 +26,10 @@ export interface Sort {
     sorted: boolean;
     unsorted: boolean;
 }
+
+export interface PaginationParams {
+    pageNumber: number;
+    size: number;
+    sortBy?: string;
+    sortDirection?: string;
+}

@@ -1,4 +1,5 @@
 import { FieldOfStudyDTO } from "./FieldOfStudy";
+import { PaginationParams } from "./Page";
 import { SpecializationDTO } from "./Specialization";
 
 export interface RecruitmentDTO {
@@ -17,10 +18,6 @@ export interface RecruitmentShortDTO {
     title: string;
 }
 
-export interface RecruitmentPaginationParams {
-    pageNumber: number;
-    size: number;
+export interface RecruitmentPaginationParams extends PaginationParams {
     search: string;
-    sortBy?: string;
-    sortDirection?: string;
 }
