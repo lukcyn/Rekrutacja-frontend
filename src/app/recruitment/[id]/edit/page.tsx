@@ -1,8 +1,8 @@
 "use client";
-import { fetchRecruitmentById } from "@/api/recruitmentFetch";
+import { fetchRecruitmentById, updateRecruitment } from "@/api/recruitmentFetch";
 import { AppUserRole } from "@/enums/role";
 import withRole from "@/middleware/withRole";
-import { RecruitmentDTO } from "@/types/Recruitment";
+import { RecruitmentDTO, RecruitmentRequest } from "@/types/Recruitment";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import DatePicker from "react-date-picker";
@@ -13,6 +13,10 @@ import { SpecializationDTO } from "@/types/Specialization";
 import { FieldOfStudyDTO } from "@/types/FieldOfStudy";
 import { fetchFieldOfStudy } from "@/api/fieldOfStudyFetch";
 import { fetchSpecializations } from "@/api/specializationFetch";
+import { Button } from "react-bootstrap";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
@@ -30,16 +34,11 @@ const RecruitmentEditPage = ({ params }: Prop) => {
   const [startDate, setStartDate] = useState<Value>();
   const [endDate, setEndDate] = useState<Value>();
   const [capacity, setCapacity] = useState<number | undefined>(0);
-  const [selectedFieldOfStudy, setSelectedFieldOfStudy] =
-    useState<FieldOfStudyDTO>();
-  const [selectedSpecialization, setSelectedSpecialization] = useState<
-    SpecializationDTO | undefined
-  >();
-
-  const [specializations, setSpecializations] = useState<SpecializationDTO[]>(
-    []
-  );
+  const [selectedFieldOfStudy, setSelectedFieldOfStudy] = useState<FieldOfStudyDTO>();
+  const [selectedSpecialization, setSelectedSpecialization] = useState<SpecializationDTO | undefined>();
+  const [specializations, setSpecializations] = useState<SpecializationDTO[]>([]);
   const [fieldOfStudies, setFieldOfStudies] = useState<FieldOfStudyDTO[]>([]);
+
 
   useEffect(() => {
     const id = verifyAndGetIdFromParams();
@@ -49,10 +48,79 @@ const RecruitmentEditPage = ({ params }: Prop) => {
 
   useEffect(() => {
     if (selectedFieldOfStudy === undefined) return;
-
-    fetchSpecializationOfFieldOfStudy(selectedFieldOfStudy.id);
-    setSelectedSpecialization(undefined);
+    fetchSpecializationsOfFieldOfStudy(selectedFieldOfStudy.id);
   }, [selectedFieldOfStudy]);
+
+  const createRecruitmentDTO = (): RecruitmentRequest => {
+    const formatDate = (date: Date | undefined): string => {
+      return date ? date.toISOString().split('T')[0] : "";
+    };
+  
+    return {
+      cycle: cycle,
+      startDate: formatDate(startDate),
+      endDate: formatDate(endDate),
+      capacity: capacity || 0,
+      fieldOfStudyId: selectedFieldOfStudy?.id,
+      specializationId: selectedSpecialization?.id || undefined,
+    };
+  };
+
+  const validateData = (recruitmentDTO: RecruitmentRequest): boolean => {
+    if(cycle === "") {
+      toast.error("Cykl rekrutacji nie może być pusty!");
+      return false;
+    }
+
+    if(startDate === null) {
+      toast.error("Data początku rekrutacji nie może być pusta!");
+      return false;
+    }
+
+    if(endDate === null){
+      toast.error("Data końcowa nie może być pusta!");
+      return false;
+    }
+
+    if(startDate! > endDate!) {
+      toast.error("Data początkowa musi być przed datą końcową");
+      return false;
+    }
+
+    if(capacity === undefined || isNaN(capacity) || capacity < 1) {
+      toast.error("Limit osób musi być liczbą większą od 0!");
+      return false;
+    }
+
+    if(selectedFieldOfStudy === undefined) {
+      toast.error("Wybierz kierunek!");
+      return false;
+    }
+
+    console.log(selectedSpecialization)
+    console.log(specializations)
+
+    if(selectedSpecialization === null && specializations.length > 0) {
+      toast.error("Wybierz specjalizację!");
+      return false;
+    }
+
+    return true;
+  };
+
+  const onButtonClick = () => {
+    const recruitmentRequest = createRecruitmentDTO();
+    
+    if(!validateData(recruitmentRequest)) 
+      return;
+
+    updateRecruitment(recruitment!.id, recruitmentRequest)
+    .then(() => {
+      console.log("Success update");
+    }).catch((error) => {
+      console.log(error);
+    });
+  };
 
   const verifyAndGetIdFromParams = () => {
     if (params.id === undefined) router.push("/notFound");
@@ -97,6 +165,7 @@ const RecruitmentEditPage = ({ params }: Prop) => {
       return;
     }
     setSelectedFieldOfStudy(fieldOfStudy);
+    setSelectedSpecialization(undefined);
 
     fetchSpecializations({ pageNumber: 0, size: 1000 }, fieldOfStudy.id)
       .then((response) => {
@@ -107,7 +176,7 @@ const RecruitmentEditPage = ({ params }: Prop) => {
       });
   };
 
-  const fetchSpecializationOfFieldOfStudy = (fieldOfStudyId: number) => {
+  const fetchSpecializationsOfFieldOfStudy = (fieldOfStudyId: number) => {
     fetchSpecializations({ pageNumber: 0, size: 1000 }, fieldOfStudyId)
       .then((response) => {
         setSpecializations(response.content);
@@ -121,6 +190,7 @@ const RecruitmentEditPage = ({ params }: Prop) => {
     <div>
       {recruitment ? (
         <>
+          <ToastContainer/>
           <h1>{recruitment.fieldOfStudy.name + " " + recruitment.cycle}</h1>
 
           <div className="row">
@@ -157,7 +227,7 @@ const RecruitmentEditPage = ({ params }: Prop) => {
 
           <div className="row">
             <div className="col-2">
-              <p>Limit osób: {recruitment.capacity}</p>
+              <p>Limit osób:</p>
             </div>
             <div className="col-3">
               <input
@@ -211,6 +281,13 @@ const RecruitmentEditPage = ({ params }: Prop) => {
                   }
                   isClearable
                 />
+              </div>
+              <div className="row">
+              <div className="col-2">
+                <Button variant="primary" onClick={onButtonClick}>
+                  Potwierdź
+                </Button>
+              </div>
               </div>
             </div>
           )}

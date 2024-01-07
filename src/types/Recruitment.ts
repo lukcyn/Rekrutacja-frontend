@@ -13,6 +13,15 @@ export interface RecruitmentDTO {
     recruitmentThreshold?: number;
 }
 
+export interface RecruitmentRequest {
+    cycle: string;
+    startDate: string;
+    endDate: string;
+    capacity: number;
+    fieldOfStudyId: number;
+    specializationId?: number;
+}
+
 export interface RecruitmentShortDTO {
     recruitmentId: number;
     title: string;
