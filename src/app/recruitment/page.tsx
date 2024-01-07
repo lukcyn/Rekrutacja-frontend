@@ -9,8 +9,10 @@ import {
   RecruitmentPaginationParams,
   RecruitmentShortDTO,
 } from "@/types/Recruitment";
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { Button } from "react-bootstrap";
 
 
 const RecruitmentPage = () => {
@@ -22,19 +24,18 @@ const RecruitmentPage = () => {
   const [total, setTotal] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState<number>(0);
 
-  var recruitmentPaginationParams: RecruitmentPaginationParams = {
-    pageNumber: 0,
-    size: 6,
-    search: searchParams.has(SEARCH_PARAM) ? searchParams.get(SEARCH_PARAM)! : "",
-  };
-
+  const [recruitmentFetchParams, setRecruitmentFetchParams] = useState<RecruitmentPaginationParams>({
+      pageNumber: 0,
+      size: 6,
+      search: searchParams.has(SEARCH_PARAM) ? searchParams.get(SEARCH_PARAM)! : "",
+  })
 
   useEffect(() => {
-    fetchRecruitmentPage(recruitmentPaginationParams);
+    fetchRecruitmentPage();
   }, []);
 
-  const fetchRecruitmentPage = (params: RecruitmentPaginationParams) => {
-    fetchRecruitment(recruitmentPaginationParams)
+  const fetchRecruitmentPage = () => {
+    fetchRecruitment(recruitmentFetchParams)
       .then((response) => {
         setRecruitments(response.content);
         setTotal(response.totalPages);
@@ -46,13 +47,13 @@ const RecruitmentPage = () => {
   };
 
   const onPaginationBarClick = (pageNumber: number) => {
-    recruitmentPaginationParams.pageNumber = pageNumber;
-    fetchRecruitmentPage(recruitmentPaginationParams);
+    setRecruitmentFetchParams({...recruitmentFetchParams, pageNumber: pageNumber})
+    fetchRecruitmentPage();
   };
 
   const onSubmit = (searchTerm: string) => {
-    recruitmentPaginationParams.search = searchTerm;
-    fetchRecruitmentPage(recruitmentPaginationParams);
+    setRecruitmentFetchParams({...recruitmentFetchParams, pageNumber: 0, search: searchTerm});
+    fetchRecruitmentPage();
   };
 
   const onCardViewClick = (data: RecruitmentShortDTO) => {
@@ -75,6 +76,7 @@ const RecruitmentPage = () => {
             (recruitment) => recruitment.recruitmentId !== data.recruitmentId
           );
           setRecruitments(updatedRecruitments);
+          fetchRecruitmentPage();
         })
         .catch((error) => {
           console.log(error);
@@ -97,7 +99,16 @@ const RecruitmentPage = () => {
 
   return (
     <div>
-      <SearchBar onSubmit={onSubmit} initialText={searchParams.has(SEARCH_PARAM) ? searchParams.get(SEARCH_PARAM)! : ""} />
+       <div className="d-flex align-items-center w-50 p-3" style={{margin: 'auto'}}>
+        <SearchBar onSubmit={onSubmit} initialText={searchParams.has(SEARCH_PARAM) ? searchParams.get(SEARCH_PARAM)! : ""} />
+      </div>
+      <div className="d-flex align-items-center justify-content-end pe-2 pb-2">
+        <Link href={"/recruitment/new"}>
+          <Button>
+            Utwórz rekrutację
+          </Button>
+        </Link>
+      </div>
       <div>{recruitments.map((recruitment) => renderCard(recruitment))}</div>
       <PaginationBar
         total={total}

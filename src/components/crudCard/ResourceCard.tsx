@@ -14,13 +14,13 @@ const ResourceCard: React.FC<Props> = ({ title, onView, onModify, onDelete }) =>
         <Card.Title>{title}</Card.Title>
       </Card.Body>
       <div className="d-flex flex-row align-items-center justify-content-between">
-        <Button variant="primary" onClick={onView}>
+        <Button className='mx-1' variant="primary" onClick={onView}>
           Podgląd
         </Button>
-        <Button variant="warning" onClick={onModify}>
+        <Button className='mx-1' variant="warning" onClick={onModify}>
           Modyfikuj
         </Button>
-        <Button variant="danger" onClick={onDelete}>
+        <Button className='mx-1' variant="danger" onClick={onDelete}>
           Usuń
         </Button>
       </div>
