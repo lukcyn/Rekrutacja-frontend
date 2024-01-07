@@ -51,7 +51,7 @@ const RecruitmentCreatePage = ({ params }: Prop) => {
     
     createRecruitment(recruitmentRequest)
     .then(() => {
-      console.log("Success create!");
+      router.push("/recruitment");
     }).catch((error) => {
       console.log(error);
     });

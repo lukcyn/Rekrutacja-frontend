@@ -57,7 +57,7 @@ const RecruitmentEditPage = ({ params }: Prop) => {
     
     updateRecruitment(recruitment!.id, recruitmentRequest)
     .then(() => {
-      console.log("Success update");
+      router.push("/recruitment");
     }).catch((error) => {
       console.log(error);
     });

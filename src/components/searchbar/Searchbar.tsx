@@ -19,7 +19,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ initialText, onSubmit }) => {
   };
 
   return (
-    <Form className="d-flex" onSubmit={submitWrapperForm}>
+    <Form className="d-flex justify-content-center align-items-center w-100" onSubmit={submitWrapperForm}>
       <FormControl
         type="text"
         placeholder="Nazwa rekrutacji"
