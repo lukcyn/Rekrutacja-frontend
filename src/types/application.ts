@@ -8,3 +8,11 @@ export interface ApplicationInfoDTO {
     applicationStatus: string,
     recruitmentIndicator: number
 }
+
+export interface ApplicationDTO {
+    id?: number,
+    recruitmentIndicator?: number,
+    preferencesNumber: number,
+    applicationStatus?: string,
+    fieldOfStudy: string
+}

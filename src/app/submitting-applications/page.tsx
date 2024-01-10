@@ -1,7 +1,16 @@
+"use client";
+import { addApplication } from "@/api/applicationFetch";
+import { ApplicationDTO } from "@/types/application";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useSubmitResult } from "@/context/submitApplicationResultContext";
 
 
 const SubmittingApplication = () => {
+
+  const router = useRouter();
+  const { setResult } = useSubmitResult()
+
 
   const fetchFieldOfStudies = async () => {
 
@@ -63,32 +72,31 @@ const SubmittingApplication = () => {
     console.log("Submit");
 
     e.preventDefault();
-
-    try {
-      console.log(JSON.stringify(formData))
-      const response = await fetch("http://localhost:8080/application/add", {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData)
-      })
-
-      if (!response.ok) {
-        const error = await response.json();
-
-        console.log(error);
-      }
-
-    } catch (error) {
-      console.log(error)
-    }
+    const application = createApplication()
+    console.log(application)
+    
+    addApplication(application)
+    .then(() => {
+      // router.push('/home/candidate')
+      console.log("OK")
+      setResult("Podanie zostalo zlozone pomyslnie")
+    })
+    .catch((error) => {
+      console.log(error.response.data)
+      setResult(error.response.data)
+    })
+    .finally(() => {
+      router.push('/home/candidate')
+    })
 
   }
 
-  const createApplication = async () => {
+  const createApplication = (): ApplicationDTO => {
 
-
+    return {
+      preferencesNumber: formData.preferencesNumber,
+      fieldOfStudy: formData.fieldOfStudy
+    }
 
   }
 

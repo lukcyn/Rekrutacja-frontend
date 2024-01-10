@@ -1,5 +1,6 @@
 import React from "react";
 import NavigationBarBase from "./NavigationBarBase";
+import Link from "next/link";
 
 const NavigationBarCandidate = () => {
   return (
@@ -16,9 +17,9 @@ const NavigationBarCandidate = () => {
           </a>
         </li>
         <li className="nav-item">
-          <a className="nav-link">
-            Podanie
-          </a>
+          <Link className="nav-link" href={"/submitting-applications"}>
+            Złóż podanie
+          </Link>
         </li>
       </ul>
     </NavigationBarBase>

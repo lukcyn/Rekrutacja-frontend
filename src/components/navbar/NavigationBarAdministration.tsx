@@ -7,9 +7,9 @@ const NavigationBarAdministration = () => {
     <NavigationBarBase>
       <ul className="navbar-nav mr-auto">
         <li className="nav-item active">
-          <a className="nav-link">
+          <Link className="nav-link" href={"/applications"}>
             Podania
-          </a>
+          </Link>
         </li>
         <li className="nav-item active">
           <Link className="nav-link" href={"/recruitment"}>

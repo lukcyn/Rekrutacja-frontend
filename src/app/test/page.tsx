@@ -1,6 +1,6 @@
 "use client";
-import SubmittingApplication from "../submitting-applications/submitting-applications";
-import Applications from "../applications/applications"
+import SubmittingApplication from "../submitting-applications/page";
+import Applications from "../applications/page"
 
 export default function Test() {
   return (

@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 import './globals.css'
 import { UserRoleProvider } from '@/context/UserRoleContext';
 import NavigationBarRoleAdaptive from '@/components/navbar/NaviagtionBarRoleAdaptive';
+import { SubmitApplicationResultProvider } from '@/context/submitApplicationResultContext';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -17,8 +18,10 @@ export default function RootLayout({ children }: Props) {
     <html lang="pl">
         <body className={inter.className}>
       <UserRoleProvider>
+        <SubmitApplicationResultProvider>
           <NavigationBarRoleAdaptive/>
-          {children}
+            {children}
+        </SubmitApplicationResultProvider>
       </UserRoleProvider>
         </body>
     </html>

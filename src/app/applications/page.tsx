@@ -1,6 +1,8 @@
+"use client";
+
 import axios from "axios"
 import { useEffect, useState } from "react"
-import { ApplicationInfoDTO } from "../dto/applicationDTOs"
+import { ApplicationInfoDTO } from "../../types/application"
 
 
 const Applications = () => {
