@@ -1,15 +1,32 @@
 "use client";
-import { addApplication } from "@/api/applicationFetch";
+import { addApplication, getPreferencesNumbers } from "@/api/applicationFetch";
 import { ApplicationDTO } from "@/types/application";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSubmitResult } from "@/context/submitApplicationResultContext";
+import { PUBLIC_DIR_MIDDLEWARE_CONFLICT } from "next/dist/lib/constants";
 
 
 const SubmittingApplication = () => {
 
   const router = useRouter();
   const { setResult } = useSubmitResult()
+
+  const [preferencesNumbers, setPreferencesNumbers] = useState<number[]>([])
+
+  useEffect(() => {
+    if(preferencesNumbers.length === 0) {
+      getPreferencesNumbers()
+      .then((response) => {
+        console.log(response)
+        setPreferencesNumbers(response)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+    }
+
+  }, [preferencesNumbers])
 
 
   const fetchFieldOfStudies = async () => {
@@ -49,11 +66,11 @@ const SubmittingApplication = () => {
           fieldOfStudy: data[0],
           preferencesNumber: 0
         })
-      } catch(e) {
+      } catch (e) {
         console.log(e)
       }
     }
-    if(fieldOfStudies.length === 0){
+    if (fieldOfStudies.length === 0) {
       fetchDataAndCreateForm()
     }
   }, [fieldOfStudies])
@@ -74,20 +91,20 @@ const SubmittingApplication = () => {
     e.preventDefault();
     const application = createApplication()
     console.log(application)
-    
+
     addApplication(application)
-    .then(() => {
-      // router.push('/home/candidate')
-      console.log("OK")
-      setResult("Podanie zostalo zlozone pomyslnie")
-    })
-    .catch((error) => {
-      console.log(error.response.data)
-      setResult(error.response.data)
-    })
-    .finally(() => {
-      router.push('/home/candidate')
-    })
+      .then(() => {
+        // router.push('/home/candidate')
+        console.log("OK")
+        setResult("Podanie zostalo zlozone pomyslnie")
+      })
+      .catch((error) => {
+        console.log(error.response.data)
+        setResult(error.response.data)
+      })
+      .finally(() => {
+        router.push('/home/candidate')
+      })
 
   }
 
@@ -100,6 +117,7 @@ const SubmittingApplication = () => {
 
   }
 
+  const checkPreferencesNumber = preferencesNumbers.includes(Number(formData.preferencesNumber.toString()))
 
   return (
 
@@ -120,6 +138,9 @@ const SubmittingApplication = () => {
         Numer preferencji :
         <input type="preferencesNumber" name="preferencesNumber" value={formData.preferencesNumber} onChange={handleChange} />
       </label>
+      {checkPreferencesNumber && (
+        <p style={{ color: 'red' }}>Istnieje juz podanie z podanym numerem preferencji</p>
+      )}
       <br />
       <button type="submit">Submit</button>
     </form>

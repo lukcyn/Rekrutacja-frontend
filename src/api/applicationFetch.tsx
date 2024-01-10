@@ -10,3 +10,12 @@ export const addApplication = async (application: ApplicationDTO): Promise<Appli
         throw error
     }
 }
+
+export const getPreferencesNumbers = async (): Promise<number[]> => {
+    try {
+        const response = await axiosPrivate.get('/application/preferences')
+        return response.data
+    } catch(error) {
+        throw error
+    }
+}
