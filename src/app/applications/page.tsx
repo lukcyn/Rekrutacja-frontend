@@ -3,6 +3,9 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
 import { ApplicationInfoDTO } from "../../types/application"
+import withRoles from "@/middleware/withRole";
+import { AppUserRole } from "@/enums/role";
+import withRole from "@/middleware/withRole";
 
 
 const Applications = () => {
@@ -53,4 +56,5 @@ const Applications = () => {
 
 }
 
-export default Applications;
+export default withRole(Applications, [AppUserRole.ADMINISTRATION_EMPLOYEE]);
+  
