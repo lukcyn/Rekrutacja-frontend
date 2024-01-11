@@ -7,6 +7,7 @@ import { useSubmitResult } from "@/context/submitApplicationResultContext";
 import { PUBLIC_DIR_MIDDLEWARE_CONFLICT } from "next/dist/lib/constants";
 import { AppUserRole } from "@/enums/role";
 import withRole from "@/middleware/withRole";
+import { getActiveFieldOfStudiesNames } from "@/api/recruitmentFetch";
 
 
 const SubmittingApplication = () => {
@@ -28,54 +29,31 @@ const SubmittingApplication = () => {
       })
     }
 
-  }, [preferencesNumbers])
+  }, [])
 
 
-  const fetchFieldOfStudies = async () => {
-
-    try {
-      const response = await fetch("http://localhost:8080/field-of-study/names", {
-        method: 'GET'
-      })
-
-      if (response.ok) {
-        const data = await response.json()
-        return data
-      } else {
-        console.log("Blad podczas zaciagania nazw kierunkow studiow")
-      }
-
-    } catch (error) {
-      console.log(error)
-    }
-
-  }
-
-  const [fieldOfStudies, setFieldOfStudies] = useState([])
+  const [fieldOfStudies, setFieldOfStudies] = useState<string[]>([])
 
   const [formData, setFormData] = useState({
     fieldOfStudy: '',
     preferencesNumber: 0
   });
 
-
   useEffect(() => {
-    const fetchDataAndCreateForm = async () => {
-      try {
-        const data = await fetchFieldOfStudies()
-        setFieldOfStudies(data)
-        setFormData({
-          fieldOfStudy: data[0],
-          preferencesNumber: 0
-        })
-      } catch (e) {
-        console.log(e)
-      }
-    }
-    if (fieldOfStudies.length === 0) {
-      fetchDataAndCreateForm()
-    }
-  }, [fieldOfStudies])
+
+    getActiveFieldOfStudiesNames()
+    .then((response) => {
+      setFieldOfStudies(response)
+      setFormData({
+        fieldOfStudy: response[0],
+        preferencesNumber: 0
+      })
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+
+  }, [])
 
 
   const handleChange = (e: any) => {
@@ -96,7 +74,6 @@ const SubmittingApplication = () => {
 
     addApplication(application)
       .then(() => {
-        // router.push('/home/candidate')
         console.log("OK")
         setResult("Podanie zostalo zlozone pomyslnie")
       })
@@ -150,4 +127,4 @@ const SubmittingApplication = () => {
 
 };
 
-export default withRole(SubmittingApplication, [AppUserRole.ADMINISTRATION_EMPLOYEE]);
+export default withRole(SubmittingApplication, [AppUserRole.CANDIDATE]);

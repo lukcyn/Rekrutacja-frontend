@@ -1,0 +1,61 @@
+/* style.css */
+
+/* Cały kontener */
+div {
+    display: flex;
+  }
+  
+  /* Styl dla listy po lewej stronie */
+  div > div:first-child {
+    flex: 1;
+    padding: 10px;
+    border-right: 1px solid #ccc;
+  }
+  
+  /* Styl dla szczegółów po prawej stronie */
+  div > div:last-child {
+    flex: 2;
+    padding: 10px;
+  }
+  
+  /* Styl dla nagłówka */
+  h2 {
+    color: #333;
+  }
+  
+  /* Styl dla listy */
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  /* Styl dla elementu listy */
+  li {
+    cursor: pointer;
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+    transition: background-color 0.3s;
+  }
+  
+  /* Styl dla elementu listy po najechaniu myszką */
+  li:hover {
+    background-color: #f0f0f0;
+  }
+  
+  /* Styl dla wybranego elementu listy */
+  li.selected {
+    background-color: #e0e0e0;
+  }
+  
+  /* Styl dla szczegółów */
+  p {
+    margin: 0;
+    padding: 5px 0;
+  }
+  
+  /* Dodatkowy styl dla szczegółów Application Number */
+  p.application-number {
+    font-weight: bold;
+  }
+  

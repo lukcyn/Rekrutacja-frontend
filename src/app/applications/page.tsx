@@ -6,6 +6,7 @@ import { ApplicationInfoDTO } from "../../types/application"
 import withRoles from "@/middleware/withRole";
 import { AppUserRole } from "@/enums/role";
 import withRole from "@/middleware/withRole";
+import { getApplications } from "@/api/applicationFetch";
 
 
 const Applications = () => {
@@ -15,9 +16,14 @@ const Applications = () => {
 
 
     useEffect(() => {
-        axios.get("http://localhost:8080/application")
-            .then(response => setApplications(response.data))
-            .catch(error => console.log(error))
+        getApplications()
+        .then((response) => {
+            setApplications(response)
+        })
+        .catch((error) => {
+            console.log(error)
+        })
+
     }, [])
 
     const handleApplicationSelected = (application: ApplicationInfoDTO) => {

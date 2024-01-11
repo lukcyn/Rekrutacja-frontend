@@ -52,3 +52,15 @@ export const createRecruitment = async (recruitment: RecruitmentRequest): Promis
         throw error;
     }
 }
+
+export const getActiveFieldOfStudiesNames = async (): Promise<string[]> => {
+
+    try {
+        const response = await axiosPrivate.get('/recruitment/field-of-study/names')
+        return response.data
+    } catch(error) {
+        console.log(error)
+        throw error
+    }
+
+}
