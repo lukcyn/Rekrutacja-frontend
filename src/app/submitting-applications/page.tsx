@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSubmitResult } from "@/context/submitApplicationResultContext";
 import { PUBLIC_DIR_MIDDLEWARE_CONFLICT } from "next/dist/lib/constants";
+import { AppUserRole } from "@/enums/role";
+import withRole from "@/middleware/withRole";
 
 
 const SubmittingApplication = () => {
@@ -148,4 +150,4 @@ const SubmittingApplication = () => {
 
 };
 
-export default SubmittingApplication;
+export default withRole(SubmittingApplication, [AppUserRole.ADMINISTRATION_EMPLOYEE]);
