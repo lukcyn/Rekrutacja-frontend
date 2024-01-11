@@ -73,9 +73,10 @@ const SubmittingApplication = () => {
     console.log(application)
 
     addApplication(application)
-      .then(() => {
+      .then((response: ApplicationDTO) => {
         console.log("OK")
-        setResult("Podanie zostalo zlozone pomyslnie")
+        console.log(response)
+        setResult(`Podanie zostalo zlozone pomyslnie z wynikiem rekrutacyjnym: ${response.recruitmentIndicator}`)
       })
       .catch((error) => {
         console.log(error.response.data)
