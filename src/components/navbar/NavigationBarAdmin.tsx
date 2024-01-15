@@ -3,7 +3,7 @@ import NavigationBarBase from "./NavigationBarBase";
 
 const NavigationBarAdmin = () => {
   return (
-    <NavigationBarBase>
+    <NavigationBarBase hasActivityIndicator>
       <ul className="navbar-nav mr-auto">
         <li className="nav-item active">
           <a className="nav-link">
