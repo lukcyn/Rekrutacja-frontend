@@ -31,3 +31,12 @@ export const sendMessage = async (userId: number, message: MessageContentDTO): P
         throw error;
     }
 }
+
+export const deleteChat = async (userId: number): Promise<void> => {
+    try {
+        await axiosPrivate.delete(`/chat/${userId}`);
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+}

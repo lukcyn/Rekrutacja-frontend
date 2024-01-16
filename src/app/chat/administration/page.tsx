@@ -1,5 +1,5 @@
 "use client";
-import { getChattersWithUser, getMessagesWithUser, sendMessage } from "@/api/chatFetch";
+import { deleteChat, getChattersWithUser, getMessagesWithUser, sendMessage } from "@/api/chatFetch";
 import { getUserData } from "@/api/userFetch";
 import ChatContactList from "@/components/chat/ChatContactList";
 import ChatWindow from "@/components/chat/ChatWindow";
@@ -13,16 +13,12 @@ import {Container, Row, Col, ListGroup } from "react-bootstrap";
 const ChatPage: React.FC = () => {
   const [chatters, setChatters] = useState<ChatParticipantDTO[]>([]);
   const [selectedContact, setSelectedContact] =
-    useState<ChatParticipantDTO | null>(null);
+    useState<ChatParticipantDTO | undefined>();
   const [messages, setMessages] = useState<MessageDTO[]>([]);
   const [userData, setUserData] = useState<AppUserDTO>();
 
   useEffect(() => {
-    getChattersWithUser()
-      .then((chatters) => {
-        setChatters(chatters.content);
-      })
-      .catch((error) => {});
+    getChatters();
 
     getUserData()
       .then((userData) => {
@@ -53,6 +49,14 @@ const ChatPage: React.FC = () => {
     setSelectedContact(chatter);
   };
 
+  const getChatters = () => {
+    getChattersWithUser()
+    .then((chatters) => {
+      setChatters(chatters.content);
+    })
+    .catch((error) => {});
+  };
+
   const onMessageSent = (message: string) => {
     if (!selectedContact) {
       return;
@@ -70,6 +74,17 @@ const ChatPage: React.FC = () => {
     })
   };
 
+  const onDisconnectClick = () => {
+    if(selectedContact == null)
+      return;
+    
+    deleteChat(selectedContact.id)
+    .then(_ => {
+      setSelectedContact(undefined);
+      getChatters();
+    });
+  }
+
   return (
     <Container fluid>
       <Row>
@@ -82,21 +97,14 @@ const ChatPage: React.FC = () => {
           </ListGroup>
         </Col>
         <Col sm={8}>
-          {selectedContact && userData ? (
             <ChatWindow
-              userId={userData.id}
+              userData={userData}
               chatter={selectedContact}
               messages={messages}
               onSendMessage={onMessageSent}
+              onDisconnectClick={onDisconnectClick}
+
             />
-          ) : ( 
-            <ChatWindow
-            userId={0}
-            chatter={{name: "(Wybierz użytkownika)", surname: "", id: 0}}
-            messages={[]}
-            onSendMessage={() => {}}
-          />
-          )}
         </Col>
       </Row>
     </Container>

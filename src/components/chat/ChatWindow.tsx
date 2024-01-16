@@ -1,20 +1,23 @@
 import { ChatParticipantDTO, MessageDTO } from "@/types/Chat";
 import { useState, useRef, useEffect } from "react";
 import { Card, Form, Button } from "react-bootstrap";
-import ".//Chat.css";
+import "@/components/chat/Chat.css";
+import { AppUserDTO } from "@/types/AppUser";
 
 interface ChatWindowProps {
-  userId: number;
-  chatter: ChatParticipantDTO;
+  userData?: AppUserDTO;
+  chatter?: ChatParticipantDTO;
   messages: MessageDTO[];
   onSendMessage: (message: string) => void;
+  onDisconnectClick: () => void;
 }
 
 const ChatWindow: React.FC<ChatWindowProps> = ({
-  userId,
+  userData,
   chatter,
   messages,
   onSendMessage,
+  onDisconnectClick,
 }) => {
   const [message, setMessage] = useState<string>("");
   const chatHistoryRef = useRef<HTMLDivElement | null>(null);
@@ -34,8 +37,15 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
 
   return (
     <div>
-      <h3>Chat z: {chatter.name + " " + chatter.surname}</h3>
+      <h3>Chat z: {chatter ? `Chat z ${chatter.name} ${chatter.surname}`: "Wybierz używtkownika"}</h3>
       <Card>
+        <Card.Header style={{height: "50px"}}>
+          { chatter && 
+            <Button variant="danger" onClick={onDisconnectClick}>
+              Rozłącz
+            </Button>
+          }
+        </Card.Header>
         <Card.Body>
           <div
             className="chat-history"
@@ -46,10 +56,10 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
               overflowY: "auto",
             }}
           >
-            {messages.map((msg, index) => (
+            {userData && messages.map((msg, index) => (
               <div
                 className={`d-flex ${
-                  msg.senderId === userId
+                  msg.senderId === userData.id
                     ? "justify-content-end"
                     : "justify-content-start"
                 }`}
@@ -57,7 +67,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
               >
                 <div
                   className={
-                    msg.senderId === userId
+                    msg.senderId === userData.id
                       ? "message message-right"
                       : "message message-left"
                   }
@@ -69,8 +79,8 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
           </div>
           <Form
             onSubmit={(e) => {
-              e.preventDefault(); // Prevent the default form submission
-              handleSendMessage(); // Call your custom function to handle the message
+              e.preventDefault();
+              handleSendMessage();
             }}
           >
             <Form.Group>
