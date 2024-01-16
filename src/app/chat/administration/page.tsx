@@ -1,12 +1,12 @@
 "use client";
-import { getChattersWithUser, getMessagesWithUser } from "@/api/chatFetch";
+import { getChattersWithUser, getMessagesWithUser, sendMessage } from "@/api/chatFetch";
 import { getUserData } from "@/api/userFetch";
 import ChatContactList from "@/components/chat/ChatContactList";
 import ChatWindow from "@/components/chat/ChatWindow";
 import { AppUserRole } from "@/enums/role";
 import withRoles from "@/middleware/withRole";
 import { AppUserDTO } from "@/types/AppUser";
-import { ChatParticipantDTO, MessageDTO } from "@/types/Chat";
+import { ChatParticipantDTO, MessageContentDTO, MessageDTO } from "@/types/Chat";
 import { useEffect, useState } from "react";
 import {Container, Row, Col, ListGroup } from "react-bootstrap";
 
@@ -32,23 +32,43 @@ const ChatPage: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    getMessagesWithSelectedUser();
+  }, [selectedContact]);
+
+  const getMessagesWithSelectedUser = () => {
     if (selectedContact == null) {
       setMessages([]);
       return;
     }
 
     getMessagesWithUser(selectedContact.id)
-      .then((messages) => {
-        setMessages(messages.content);
-      })
-      .catch((error) => {});
-  }, [selectedContact]);
+    .then((messages) => {
+      console.log(messages)
+      setMessages(messages.content);
+    })
+    .catch((error) => {});
+  }
 
   const onChatterSelected = (chatter: ChatParticipantDTO) => {
     setSelectedContact(chatter);
   };
 
-  const onMessageSent = (message: string) => {};
+  const onMessageSent = (message: string) => {
+    if (!selectedContact) {
+      return;
+    }
+
+    const messageData: MessageContentDTO = {
+      content: message,
+    };
+
+    console.log(messageData);
+
+    sendMessage(selectedContact.id, messageData)
+    .then(_ => {
+      getMessagesWithSelectedUser();
+    })
+  };
 
   return (
     <Container fluid>
@@ -62,8 +82,9 @@ const ChatPage: React.FC = () => {
           </ListGroup>
         </Col>
         <Col sm={8}>
-          {selectedContact ? (
+          {selectedContact && userData ? (
             <ChatWindow
+              userId={userData.id}
               chatter={selectedContact}
               messages={messages}
               onSendMessage={onMessageSent}

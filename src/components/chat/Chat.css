@@ -1,0 +1,22 @@
+.message {
+    margin-bottom: 5px;
+    border-radius: 10px;
+    padding: 10px;
+    max-width: 40%;
+    width: fit-content;
+  }
+  
+  .message-right {
+    text-align: right;
+    margin-right: 10px;
+    background-color: #3498db;
+    color: #ffffff;
+  }
+  
+  .message-left {
+    text-align: left;
+    margin-left: 10px;
+    background-color: #e3e3e3;
+    color: #333333;
+  }
+  
