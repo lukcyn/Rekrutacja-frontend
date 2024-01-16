@@ -26,6 +26,11 @@ const NavigationBarAdministration = () => {
               Rekrutacje
           </Link>
         </li>
+        <li className="nav-item active">
+          <Link className="nav-link" href={"/chat/administration"}>
+              Chat
+          </Link>
+        </li>
       </ul>
     </NavigationBarBase>
   );

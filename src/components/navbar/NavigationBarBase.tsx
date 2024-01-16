@@ -22,20 +22,14 @@ const NavigationBarBase = ({
 }: Props) => {
   const idleTimeoutMs = 3000;
   const { setUserRole } = useUserRole();
-  const [state, setState] = useState<string>(ActivityStatus.ACTIVE);
+  const [state, setState] = useState<ActivityStatus>(ActivityStatus.ACTIVE);
   const [remaining, setRemaining] = useState<number>(0);
 
   const onIdle = () => {
-    if(state == ActivityStatus.ACTIVE)
-      onActivityChange(ActivityStatus.INACTIVE);
-    
     setState(ActivityStatus.INACTIVE);
   };
 
   const onActive = () => {
-    if(state == ActivityStatus.INACTIVE)
-      onActivityChange(ActivityStatus.ACTIVE);
-    
     setState(ActivityStatus.ACTIVE);
   };
 
@@ -59,6 +53,10 @@ const NavigationBarBase = ({
       clearInterval(interval);
     };
   });
+
+  useEffect(() => {
+    onActivityChange(state);
+  }, [state]);
 
   return (
     <div>
