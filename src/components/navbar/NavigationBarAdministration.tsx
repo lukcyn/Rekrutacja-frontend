@@ -6,15 +6,18 @@ import { ActivityStatus } from "@/types/ActivityStatus";
 
 const NavigationBarAdministration = () => {
 
-  const onActivityChange = (activityStatus: ActivityStatus) => {
-    console.log(activityStatus);
-    
+  const onActivityChange = (activityStatus: ActivityStatus) => {    
     changeActivityStatus(activityStatus)
       .catch(error => {});
   };
 
+  const afterLogout = () => {
+    changeActivityStatus(ActivityStatus.INACTIVE)
+    .catch(error => {});
+  }
+
   return (
-    <NavigationBarBase hasActivityIndicator onActivityChange={onActivityChange}>
+    <NavigationBarBase hasActivityIndicator onActivityChange={onActivityChange} afterLogout={afterLogout}>
       <ul className="navbar-nav mr-auto">
         <li className="nav-item active">
           <Link className="nav-link" href={"/applications"}>

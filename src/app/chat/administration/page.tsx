@@ -58,7 +58,7 @@ const ChatPage: React.FC = () => {
   };
 
   const onMessageSent = (message: string) => {
-    if (!selectedContact) {
+    if (!selectedContact || message === "") {
       return;
     }
 
@@ -99,7 +99,7 @@ const ChatPage: React.FC = () => {
         <Col sm={8}>
             <ChatWindow
               userData={userData}
-              chatter={selectedContact}
+              chatterId={selectedContact?.id}
               messages={messages}
               onSendMessage={onMessageSent}
               onDisconnectClick={onDisconnectClick}

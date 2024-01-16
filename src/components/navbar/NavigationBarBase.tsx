@@ -12,6 +12,7 @@ type Props = {
   hasLogoutButton?: boolean;
   hasActivityIndicator?: boolean;
   onActivityChange?: (activityStatus: ActivityStatus) => void;
+  afterLogout?: () => void;
 };
 
 const NavigationBarBase = ({
@@ -19,8 +20,9 @@ const NavigationBarBase = ({
   hasLogoutButton = true,
   hasActivityIndicator = false,
   onActivityChange = (activityStatus: ActivityStatus) => {},
+  afterLogout = () => {},
 }: Props) => {
-  const idleTimeoutMs = 3000;
+  const idleTimeoutMs = 60000;
   const { setUserRole } = useUserRole();
   const [state, setState] = useState<ActivityStatus>(ActivityStatus.ACTIVE);
   const [remaining, setRemaining] = useState<number>(0);
@@ -58,6 +60,11 @@ const NavigationBarBase = ({
     onActivityChange(state);
   }, [state]);
 
+  const onLogout = () => {
+    logout(setUserRole);
+    afterLogout();
+  }
+
   return (
     <div>
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark px-3">
@@ -93,7 +100,7 @@ const NavigationBarBase = ({
             )}
             <button
               className="btn btn-light"
-              onClick={() => logout(setUserRole)}
+              onClick={onLogout}
             >
               Wyloguj
             </button>

@@ -40,3 +40,13 @@ export const deleteChat = async (userId: number): Promise<void> => {
         throw error;
     }
 }
+
+export const findEmployeeAndSendFirstMessage = async (message: MessageContentDTO): Promise<MessageDTO> => {
+    try {
+        const response = await axiosPrivate.post(`/chat/pick-employee`, message);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+}

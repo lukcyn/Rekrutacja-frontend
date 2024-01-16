@@ -6,7 +6,7 @@ import { AppUserDTO } from "@/types/AppUser";
 
 interface ChatWindowProps {
   userData?: AppUserDTO;
-  chatter?: ChatParticipantDTO;
+  chatterId?: number;
   messages: MessageDTO[];
   onSendMessage: (message: string) => void;
   onDisconnectClick: () => void;
@@ -14,7 +14,7 @@ interface ChatWindowProps {
 
 const ChatWindow: React.FC<ChatWindowProps> = ({
   userData,
-  chatter,
+  chatterId,
   messages,
   onSendMessage,
   onDisconnectClick,
@@ -37,10 +37,9 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
 
   return (
     <div>
-      <h3>Chat z: {chatter ? `Chat z ${chatter.name} ${chatter.surname}`: "Wybierz używtkownika"}</h3>
       <Card>
         <Card.Header style={{height: "50px"}}>
-          { chatter && 
+          { chatterId && 
             <Button variant="danger" onClick={onDisconnectClick}>
               Rozłącz
             </Button>
