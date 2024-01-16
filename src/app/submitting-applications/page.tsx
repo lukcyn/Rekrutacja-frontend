@@ -99,31 +99,49 @@ const SubmittingApplication = () => {
 
   const checkPreferencesNumber = preferencesNumbers.includes(Number(formData.preferencesNumber.toString()))
 
-  return (
-
-    <form onSubmit={handleSubmit}>
-      <label>
-        Wybierz kierunek:
-        <select name="fieldOfStudy" value={formData.fieldOfStudy} onChange={handleChange} >
-          {fieldOfStudies.map((name, index) => (
-            <option key={index} value={name}>
-              {name}
-            </option>
-          ))
-          }
-        </select>
-      </label>
-      <br />
-      <label>
-        Numer preferencji :
-        <input type="preferencesNumber" name="preferencesNumber" value={formData.preferencesNumber} onChange={handleChange} />
-      </label>
-      {checkPreferencesNumber && (
-        <p style={{ color: 'red' }}>Istnieje juz podanie z podanym numerem preferencji</p>
-      )}
-      <br />
-      <button type="submit">Submit</button>
-    </form>
+  return  (
+    <div className="container xl">
+      <form onSubmit={handleSubmit}>
+        <div className="mb-3">
+          <label className="form-label">Wybierz kierunek:</label>
+          <select
+            name="fieldOfStudy"
+            value={formData.fieldOfStudy}
+            onChange={handleChange}
+            className="form-select"
+          >
+            {fieldOfStudies.map((name, index) => (
+              <option key={index} value={name}>
+                {name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="mb-3">
+          <label className="form-label">Numer preferencji:</label>
+          <input
+            type="number"
+            name="preferencesNumber"
+            value={formData.preferencesNumber}
+            onChange={handleChange}
+            className="form-control"
+            min="0"
+          />
+          {checkPreferencesNumber && (
+            <small className="text-danger">
+              Istnieje już podanie z podanym numerem preferencji
+            </small>
+          )}
+        </div>
+        <button
+          disabled={checkPreferencesNumber}
+          type="submit"
+          className="btn btn-primary"
+        >
+          Submit
+        </button>
+      </form>
+    </div>
   );
 
 };
