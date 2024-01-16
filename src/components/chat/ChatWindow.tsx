@@ -34,7 +34,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
 
   return (
     <div>
-      <h3>Chat with {chatter.name + " " + chatter.surname}</h3>
+      <h3>Chat z: {chatter.name + " " + chatter.surname}</h3>
       <Card>
         <Card.Body>
           <div
@@ -67,7 +67,12 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
               </div>
             ))}
           </div>
-          <Form>
+          <Form
+            onSubmit={(e) => {
+              e.preventDefault(); // Prevent the default form submission
+              handleSendMessage(); // Call your custom function to handle the message
+            }}
+          >
             <Form.Group>
               <Form.Control
                 type="text"
@@ -76,7 +81,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
                 onChange={(e) => setMessage(e.target.value)}
               />
             </Form.Group>
-            <Button variant="primary" onClick={handleSendMessage}>
+            <Button variant="primary" type="submit">
               Send
             </Button>
           </Form>

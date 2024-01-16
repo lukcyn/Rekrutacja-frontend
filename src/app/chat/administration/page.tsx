@@ -89,8 +89,13 @@ const ChatPage: React.FC = () => {
               messages={messages}
               onSendMessage={onMessageSent}
             />
-          ) : (
-            <div>Select a contact to start chatting</div>
+          ) : ( 
+            <ChatWindow
+            userId={0}
+            chatter={{name: "(Wybierz użytkownika)", surname: "", id: 0}}
+            messages={[]}
+            onSendMessage={() => {}}
+          />
           )}
         </Col>
       </Row>
