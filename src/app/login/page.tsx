@@ -6,6 +6,9 @@ import { login } from "@/api/auth";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Cookies from 'js-cookie';
+import { changeActivityStatus } from "@/api/activityStatus";
+import { ActivityStatus } from "@/types/ActivityStatus";
+import { AppUserRole } from "@/enums/role";
 
 
 export default function Login() {
@@ -24,6 +27,11 @@ export default function Login() {
       Cookies.set('token', data.token, { expires: 1 });
       Cookies.set('role', data.role, { expires: 1 });
 
+      if(data.role === AppUserRole.ADMINISTRATION_EMPLOYEE) {
+        changeActivityStatus(ActivityStatus.ACTIVE)
+        .catch(error => {});
+      }
+      
       router.push("/");
     }).catch((error) => {
       if(error.response.status === 401)
