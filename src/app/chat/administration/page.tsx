@@ -18,14 +18,27 @@ const ChatPage: React.FC = () => {
   const [userData, setUserData] = useState<AppUserDTO>();
 
   useEffect(() => {
-    getChatters();
-
     getUserData()
-      .then((userData) => {
-        setUserData(userData);
-      })
-      .catch((error) => {});
+    .then((userData) => {
+      setUserData(userData);
+      getChatters();
+    })
+    .catch((error) => {});
   }, []);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+
+      if(selectedContact != null) {
+        console.log("getMessages, chatterId not null!", selectedContact);
+        getMessagesWithSelectedUser();        
+      }
+    }, 1000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [selectedContact]);
 
   useEffect(() => {
     getMessagesWithSelectedUser();
@@ -52,6 +65,7 @@ const ChatPage: React.FC = () => {
   const getChatters = () => {
     getChattersWithUser()
     .then((chatters) => {
+      console.log(chatters);
       setChatters(chatters.content);
     })
     .catch((error) => {});

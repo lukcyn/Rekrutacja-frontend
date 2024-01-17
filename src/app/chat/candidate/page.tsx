@@ -28,6 +28,7 @@ const ChatPageCandidate: React.FC = () => {
     const intervalId = setInterval(() => {
 
       if(chatterId != null) {
+        console.log("getMessages, chatterId not null!", chatterId);
         getMessagesWithUser(chatterId)
         .then((messages) => {
           setMessages(messages.content);
@@ -40,7 +41,7 @@ const ChatPageCandidate: React.FC = () => {
     return () => {
       clearInterval(intervalId);
     };
-  }, []);
+  }, [chatterId]);
 
   const getMessages = (chatterId: number) => {
     console.log("getMessages", chatterId);
