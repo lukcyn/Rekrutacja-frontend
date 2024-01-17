@@ -16,8 +16,16 @@ const NavigationBarAdministration = () => {
     .catch(error => {});
   }
 
+  const onActivityPing = (activityStatus: ActivityStatus) => {
+    if(activityStatus === ActivityStatus.INACTIVE)
+      return;
+
+    changeActivityStatus(ActivityStatus.ACTIVE)
+      .catch(error => {});
+  }
+
   return (
-    <NavigationBarBase hasActivityIndicator onActivityChange={onActivityChange} afterLogout={afterLogout}>
+    <NavigationBarBase hasActivityIndicator onActivityChange={onActivityChange} afterLogout={afterLogout} onActivityPing={onActivityPing}>
       <ul className="navbar-nav mr-auto">
         <li className="nav-item active">
           <Link className="nav-link" href={"/applications"}>

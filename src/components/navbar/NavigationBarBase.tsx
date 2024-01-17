@@ -13,6 +13,7 @@ type Props = {
   hasActivityIndicator?: boolean;
   onActivityChange?: (activityStatus: ActivityStatus) => void;
   afterLogout?: () => void;
+  onActivityPing?: (activityStatus: ActivityStatus) => void;
 };
 
 const NavigationBarBase = ({
@@ -21,6 +22,7 @@ const NavigationBarBase = ({
   hasActivityIndicator = false,
   onActivityChange = (activityStatus: ActivityStatus) => {},
   afterLogout = () => {},
+  onActivityPing = (activityStatus: ActivityStatus) => {},
 }: Props) => {
   const idleTimeoutMs = 60000;
   const { setUserRole } = useUserRole();
@@ -59,6 +61,18 @@ const NavigationBarBase = ({
   useEffect(() => {
     onActivityChange(state);
   }, [state]);
+
+  
+  useEffect(() => {
+    const interval = setInterval(() => {
+      onActivityPing(state);
+    }, 3000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [state]);
+
 
   const onLogout = () => {
     logout(setUserRole);
