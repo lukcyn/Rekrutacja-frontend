@@ -17,6 +17,7 @@ type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
 
 interface Prop {
+  title: string;
   cycle: string;
   setCycle: React.Dispatch<React.SetStateAction<string>>;
   startDate: Value | undefined;
@@ -37,6 +38,7 @@ interface Prop {
 }
 
 const CreateEditBasePage = ({ 
+    title,
     cycle,
     setCycle,
     startDate,
@@ -64,6 +66,8 @@ const CreateEditBasePage = ({
   useEffect(() => {
     if (selectedFieldOfStudy === undefined) return;
     fetchSpecializationsOfFieldOfStudy(selectedFieldOfStudy.id);
+
+    selectedSpecialization = undefined;
   }, [selectedFieldOfStudy]);
 
 
@@ -101,7 +105,7 @@ const CreateEditBasePage = ({
     console.log(selectedSpecialization);
     console.log(specializations);
 
-    if (selectedSpecialization === null && specializations.length > 0) {
+    if (selectedSpecialization === null || selectedSpecialization === undefined && specializations.length > 0) {
       toast.error("Wybierz specjalizację!");
       return false;
     }
@@ -155,7 +159,7 @@ const CreateEditBasePage = ({
   return (
     <div>
           <ToastContainer />
-          <h1>Utwórz rekrutację</h1>
+          <h1>{title}</h1>
 
           <div className="row">
             <div className="col-2">

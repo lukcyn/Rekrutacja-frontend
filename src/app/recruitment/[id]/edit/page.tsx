@@ -91,6 +91,7 @@ const RecruitmentEditPage = ({ params }: Prop) => {
 
   return (
     <CreateEditBasePage
+        title={"Edytuj rekrutację"}
         cycle={cycle}
         setCycle={setCycle}
         startDate={startDate}
