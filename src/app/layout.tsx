@@ -5,6 +5,7 @@ import './globals.css'
 import { UserRoleProvider } from '@/context/UserRoleContext';
 import NavigationBarRoleAdaptive from '@/components/navbar/NaviagtionBarRoleAdaptive';
 import { SubmitApplicationResultProvider } from '@/context/submitApplicationResultContext';
+import {UserDataProvider} from "@/context/userDataContext";
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -17,11 +18,16 @@ export default function RootLayout({ children }: Props) {
   return (
     <html lang="pl">
         <body className={inter.className}>
+        {/*<UserDataProvider>*/}
+        {/*    {children}*/}
+        {/*</UserDataProvider>*/}
       <UserRoleProvider>
-        <SubmitApplicationResultProvider>
-          <NavigationBarRoleAdaptive/>
-            {children}
-        </SubmitApplicationResultProvider>
+          <UserDataProvider>
+            <SubmitApplicationResultProvider>
+              <NavigationBarRoleAdaptive/>
+                {children}
+            </SubmitApplicationResultProvider>
+          </UserDataProvider>
       </UserRoleProvider>
         </body>
     </html>
