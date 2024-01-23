@@ -1,7 +1,6 @@
 "use client";
 
 import {useEffect, useState} from "react"
-import {ApplicationInfoDTO} from "../../types/application"
 import withRole from "@/middleware/withRole";
 import {AppUserRole} from "@/enums/role";
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -14,8 +13,6 @@ import {useUserdataResult} from "@/context/userDataContext";
 
 
 const UsersList = () => {
-    const [applications, setApplications] = useState<ApplicationInfoDTO[]>([])
-    const [selectedApplication, setSelectedApplication] = useState<ApplicationInfoDTO | null>(null)
     const [total, setTotal] = useState<number>(0);
     const [currentPage, setCurrentPage] = useState<number>(0);
 
@@ -30,32 +27,24 @@ const UsersList = () => {
     })
 
 
-
     const fetchUsers = () => {
         fetchAppUsersByNameAndSurname(applicationFetchParams, name, surname)
             .then((response) => {
                 console.log(response)
                 setUsers(response)
-                //setTotal(response.totalPages)
-                //setCurrentPage(response.number)
             })
             .catch((error) => {
                 console.log(error)
             })
     }
 
-
     useEffect(() => {
         fetchUsers()
         console.log(users);
-
-
-        //fetchAppUsersByNameAndSurname(name, )
     }, [])
 
     const onPaginationBarClick = (pageNumber: number) => {
         setApplicationFetchParams({...applicationFetchParams, pageNumber: pageNumber})
-        //fetchApplications()
         fetchUsers()
     }
 

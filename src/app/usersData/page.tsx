@@ -17,25 +17,11 @@ interface Prop {
 
 const UsersDataPage = ({params}: Prop) => {
     const router = useRouter();
-    //const navigate = useNavigate();
-    //const [name, setName] = useState<string>("");
-    //const [surname, setSurname] = useState<string>("");
-
     const [formData, setFormData] = useState({
         name: '',
         surname: ''
     });
     const {setResult} = useUserdataResult()
-    //const setSearchParams = useSearchParams();
-
-
-    // const handleNameChange = (event: { target: { value: SetStateAction<string>; }; }) => {
-    //     setName(event.target.value);
-    // };
-    //
-    // const handleSurnameChange = (event: { target: { value: SetStateAction<string>; }; }) => {
-    //     setSurname(event.target.value);
-    // };
 
     const handleChange = (e: any) => {
         const {name, value} = e.target
@@ -46,46 +32,17 @@ const UsersDataPage = ({params}: Prop) => {
         }));
     };
 
-    const getUserData = () => {
-        return {
-            name: formData.name,
-            surname: formData.surname
-        };
-    };
-
-    const handleSubmit = () => {
-        onButtonClick();
-    }
-
-    const name1 = formData.name
-    const surname1 = formData.surname
-
     const onButtonClick = () => {
-        //const userData = getUserData();
 
         if (formData.name.length > 20 || formData.surname.length > 20) {
-            // Wyświetl alert lub inny komunikat o błędzie
             alert("Imię lub nazwisko nie może mieć więcej niż 20 znaków!");
-            return; // Przerwij funkcję, aby uniknąć przekierowania w przypadku błędu
+            return;
         }
-
-
-        //setSearchParams({ name, surname });
 
         setResult(formData.name, formData.surname)
 
         router.push("/usersList");
 
-
-        //navigate('/usersList', { state: { name1, surname1 } });
-        //history.push('/usersList', { name1, surname1 });
-        // router.push({
-        //     pathname: '/usersList',
-        //     query: { name, surname },
-        // });
-
-        //navigate('/usersList', {state: userData});
-        // Możesz użyć funkcji do przekazania danych do innego miejsca w aplikacji lub wykonać inne odpowiednie akcje
         console.log(`Imię: ${formData.name}, Nazwisko: ${formData.surname}`);
     };
 
@@ -122,12 +79,6 @@ const UsersDataPage = ({params}: Prop) => {
                         />
                     </div>
                 </div>
-                {/*<button*/}
-                {/*    type="submit"*/}
-                {/*    className="btn btn-primary"*/}
-                {/*>*/}
-                {/*    Submit*/}
-                {/*</button>*/}
                 <div className="row">
                     <div className="col-2">
                         <Button variant="primary" onClick={onButtonClick}>
@@ -136,7 +87,6 @@ const UsersDataPage = ({params}: Prop) => {
                     </div>
                 </div>
             </form>
-            {/*<button onClick={onButtonClick}>Zatwierdź</button>*/}
         </div>
     );
 };
