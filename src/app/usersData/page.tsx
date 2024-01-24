@@ -38,6 +38,10 @@ const UsersDataPage = ({params}: Prop) => {
             alert("Imię lub nazwisko nie może mieć więcej niż 20 znaków!");
             return;
         }
+        if (formData.name.length == 0 || formData.surname.length == 0) {
+            alert("Musisz wypełnić imie i nazwisko!");
+            return;
+        }
 
         setResult(formData.name, formData.surname)
 
