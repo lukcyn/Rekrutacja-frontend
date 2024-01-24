@@ -77,12 +77,12 @@ const CreateEditBasePage = ({
       return false;
     }
 
-    if (startDate === null) {
+    if (startDate == null) {
       toast.error("Data początku rekrutacji nie może być pusta!");
       return false;
     }
 
-    if (endDate === null) {
+    if (endDate == null) {
       toast.error("Data końcowa nie może być pusta!");
       return false;
     }
