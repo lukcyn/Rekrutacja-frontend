@@ -1,11 +1,12 @@
 import React from "react";
 import NavigationBarBase from "./NavigationBarBase";
 import Link from "next/link";
-import { changeActivityStatus } from "@/api/activityStatus";
-import { ActivityStatus } from "@/types/ActivityStatus";
+import {changeActivityStatus} from "@/api/activityStatus";
+import {ActivityStatus} from "@/types/ActivityStatus";
 
 const NavigationBarAdministration = () => {
 
+  
   const onActivityChange = (activityStatus: ActivityStatus) => {    
     changeActivityStatus(activityStatus)
       .catch(error => {});
@@ -42,6 +43,11 @@ const NavigationBarAdministration = () => {
               Chat
           </Link>
         </li>
+        <li className="nav-item active">
+                    <Link className="nav-link" href={"/usersData"}>
+                        Zarządzanie danymi użytkowników
+                    </Link>
+                </li>
       </ul>
     </NavigationBarBase>
   );
