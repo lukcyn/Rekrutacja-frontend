@@ -1,4 +1,5 @@
 
+import { AppUserRole } from "@/enums/role"
 
 export interface AppUserDTO {
     id: number;
@@ -7,7 +8,7 @@ export interface AppUserDTO {
     surname: string;
     login: string;
     email: string;
-    role: string;
+    role: AppUserRole;
     isEnabled: boolean;
     dateOfBirth: string;
 }
@@ -15,4 +16,6 @@ export interface AppUserDTO {
 export interface AppUserParams {
     name: string;
     surname: string;
+
+    
 }

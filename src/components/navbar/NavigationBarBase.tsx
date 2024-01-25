@@ -12,6 +12,8 @@ type Props = {
   hasLogoutButton?: boolean;
   hasActivityIndicator?: boolean;
   onActivityChange?: (activityStatus: ActivityStatus) => void;
+  afterLogout?: () => void;
+  onActivityPing?: (activityStatus: ActivityStatus) => void;
 };
 
 const NavigationBarBase = ({
@@ -19,23 +21,19 @@ const NavigationBarBase = ({
   hasLogoutButton = true,
   hasActivityIndicator = false,
   onActivityChange = (activityStatus: ActivityStatus) => {},
+  afterLogout = () => {},
+  onActivityPing = (activityStatus: ActivityStatus) => {},
 }: Props) => {
-  const idleTimeoutMs = 3000;
+  const idleTimeoutMs = 60000;
   const { setUserRole } = useUserRole();
-  const [state, setState] = useState<string>(ActivityStatus.ACTIVE);
+  const [state, setState] = useState<ActivityStatus>(ActivityStatus.ACTIVE);
   const [remaining, setRemaining] = useState<number>(0);
 
   const onIdle = () => {
-    if(state == ActivityStatus.ACTIVE)
-      onActivityChange(ActivityStatus.INACTIVE);
-    
     setState(ActivityStatus.INACTIVE);
   };
 
   const onActive = () => {
-    if(state == ActivityStatus.INACTIVE)
-      onActivityChange(ActivityStatus.ACTIVE);
-    
     setState(ActivityStatus.ACTIVE);
   };
 
@@ -59,6 +57,27 @@ const NavigationBarBase = ({
       clearInterval(interval);
     };
   });
+
+  useEffect(() => {
+    onActivityChange(state);
+  }, [state]);
+
+  
+  useEffect(() => {
+    const interval = setInterval(() => {
+      onActivityPing(state);
+    }, 3000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [state]);
+
+
+  const onLogout = () => {
+    logout(setUserRole);
+    afterLogout();
+  }
 
   return (
     <div>
@@ -95,7 +114,7 @@ const NavigationBarBase = ({
             )}
             <button
               className="btn btn-light"
-              onClick={() => logout(setUserRole)}
+              onClick={onLogout}
             >
               Wyloguj
             </button>

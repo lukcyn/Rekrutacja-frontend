@@ -21,9 +21,16 @@ const NavigationBarCandidate = () => {
             Złóż podanie
           </Link>
         </li>
+
         <li className="nav-item">
           <Link className="nav-link" href={"/preferences"}>
             Sprawdź swoje preferencje
+             </Link>
+        </li>
+        <li className="nav-item active">
+          <Link className="nav-link" href={"/chat/candidate"}>
+              Chat
+
           </Link>
         </li>
       </ul>
